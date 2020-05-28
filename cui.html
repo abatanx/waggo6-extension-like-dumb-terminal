@@ -1,0 +1,80 @@
+<style>
+body
+{
+	position: relative;
+	font-size: {@charViewportWidth};
+	line-height: {@charViewportHeight};
+}
+
+#cui-canvas
+{
+	position: relative;
+	width: {@cuiViewportWidth};
+	height: {@cuiViewportHeight};
+}
+</style>
+
+<form id="cui-canvas" class="wg-form" action="{@form:action}" method="{@form:method}" enctype="{@form:enctype}">
+	<div class="cui-css-line-layer">
+<!--{each cssHorizontalLines}-->
+		<div class="horizontal" style="left:calc({@w}*(0.5 + {@cssHorizontalLines/x}));top:calc({@h}*(0.5 + {@cssHorizontalLines/y}));width:calc({@w}*({@cssHorizontalLines/len} - 1));"></div>
+<!--{/each}-->
+<!--{each cssVerticalLines}-->
+		<div class="vertical" style="left:calc({@w}*(0.5 + {@cssVerticalLines/x}));top:calc({@h}*(0.5 + {@cssVerticalLines/y}));height:calc({@h}*({@cssVerticalLines/len} - 1));"></div>
+<!--{/each}-->
+	</div>
+	<div class="cui-css-static-layer">
+<!--{each cssStatics}-->
+		<div class="element" style="left:calc({@w}*{@cssStatics/x});top:calc({@h}*{@cssStatics/y});width:calc({@w}*{@cssStatics/width});height:calc({@h}*{@cssStatics/height});">{@cssStatics/label}</div>
+<!--{/each}-->
+	</div>
+	<div class="cui-css-element-layer">
+		<!--{each cssElements}-->
+		<div class="element" style="left:calc({@w}*{@cssElements/x});top:calc({@h}*{@cssElements/y});width:calc({@w}*{@cssElements/width});height:calc({@h}*{@cssElements/height});">{@cssElements/view}</div>
+		<!--{/each}-->
+	</div>
+	<!--{each fnElements}-->{@fnElements/view}<!--{/each}-->
+</form>
+<script>
+	$(function()
+	{
+		$('.cui-css-element-layer input').on("keydown", function(e)
+		{
+			var c = $('.cui-css-element-layer input');
+			var n = c.length;
+			console.log(n);
+
+			if (e.which === 13)
+			{
+				e.preventDefault();
+				var idx = c.index(this);
+
+				if (idx < n - 1 )
+				{
+					console.log(c[idx+1]);
+					c[idx+1].focus();
+				}
+				else if( n > 0 )
+				{
+					console.log(c[0]);
+					c[0].focus();
+				}
+			}
+		});
+	});
+
+	$(document).on('keydown',function(event)
+	{
+		var fn = {
+			112: 'F1', 113: 'F2', 114: 'F3', 115: 'F4', 116: 'F5', 117: 'F6', 118: 'F7', 119: 'F8', 120: 'F9',
+			121: 'F10', 122: 'F11', 123: 'F12'
+		};
+
+		if( fn[event.keyCode] )
+		{
+			$('input[name=' + fn[event.keyCode]).click();
+			return false;
+		}
+	});
+
+</script>
