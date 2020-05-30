@@ -12,10 +12,14 @@ class WGCUICanvas extends WGHtmlCanvas
 
 	protected $matrixLine, $cssLine;
 	protected $elements, $staticElements;
+	protected $groupedElements;
+
+	protected $arrayViews;
 
 	public function __construct($cuiWidth, $cuiHeight)
 	{
 		parent::__construct();
+
 		$this->cuiWidth  = $cuiWidth ;
 		$this->cuiHeight = $cuiHeight;
 
@@ -31,6 +35,7 @@ class WGCUICanvas extends WGHtmlCanvas
 
 	public function loadLayout($file)
 	{
+		$this->arrayViews     = [];
 		$this->elements       = [];
 		$this->staticElements = [];
 		$this->cssLine        = [];
@@ -201,13 +206,13 @@ class WGCUICanvas extends WGHtmlCanvas
 			}
 		}
 
-		$elements = [];
+		$this->groupedElements = [];
 		foreach ( $this->elements as $element )
 		{
-			$elements[ $element->name ][] = $element;
+			$this->groupedElements[ $element->name ][] = $element;
 		}
 
-		foreach ( $elements as $name => $element_array )
+		foreach ( $this->groupedElements as $name => $element_array )
 		{
 			if ( count( $element_array ) === 1 )
 			{
@@ -217,7 +222,7 @@ class WGCUICanvas extends WGHtmlCanvas
 			{
 				foreach ( $element_array as $n => $element )
 				{
-					$element->viewName = sprintf( "%s[%d]", $name, $n );
+					$element->viewName = sprintf( "%s_%d", $name, $n );
 				}
 			}
 		}
@@ -237,6 +242,19 @@ class WGCUICanvas extends WGHtmlCanvas
 			$views[$element->viewName] = $element->cuiElement->view();
 		}
 		return $views;
+	}
+
+	/**
+	 * @param string $name key name
+	 * @return WGV6Object[]
+	 */
+	public function getGroupedViews($name)
+	{
+		if( isset($this->groupedElements[$name]) )
+		{
+			return array_map( function($v) { return $v->cuiElement->view(); }, $this->groupedElements[$name]);
+		}
+		return [];
 	}
 
 	public function makeHtml()

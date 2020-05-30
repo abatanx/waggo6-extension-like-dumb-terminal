@@ -26,11 +26,6 @@ abstract class WGCUIPCController extends WGFPCController
 		return $this->pageCanvas->loadLayout( $this->layout() )->makeViews();
 	}
 
-	public function afterViews()
-	{
-		$this->view('FN01')->setValue('FN01ABC');
-	}
-
 	public function layout()
 	{
 		return $this->defaultTemplate();

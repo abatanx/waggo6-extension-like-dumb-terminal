@@ -65,11 +65,11 @@ body
 
 	$(document).on('keydown',function(event)
 	{
-		var fn = {
-			112: 'F1', 113: 'F2', 114: 'F3', 115: 'F4', 116: 'F5', 117: 'F6', 118: 'F7', 119: 'F8', 120: 'F9',
-			121: 'F10', 122: 'F11', 123: 'F12'
+		let fn = {
+			112: 'FN01', 113: 'FN02', 114: 'FN03', 115: 'FN04',
+			116: 'FN05', 117: 'FN06', 118: 'FN07', 119: 'FN08',
+			120: 'FN09', 121: 'FN10', 122: 'FN11', 123: 'FN12'
 		};
-
 		if( fn[event.keyCode] )
 		{
 			$('input[name=' + fn[event.keyCode]).click();
