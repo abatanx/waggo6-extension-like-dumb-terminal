@@ -6,7 +6,8 @@
  * Class WGCUICanvas
  */
 
-require_once(WGCONF_DIR_FRAMEWORK_CONTROLLER."/WGFPCController.php");
+require_once __DIR__ . '/extension.php';
+require_once WGCONF_DIR_FRAMEWORK_CONTROLLER."/WGFPCController.php" ;
 
 abstract class WGCUIPCController extends WGFPCController
 {

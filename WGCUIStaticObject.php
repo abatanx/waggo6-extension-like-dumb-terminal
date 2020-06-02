@@ -6,7 +6,7 @@
  * Class WGCUICanvas
  */
 
-class WGCUIStaticElement extends WGCUIElement
+class WGCUIStaticObject extends WGCUIObject
 {
 	public $label;
 

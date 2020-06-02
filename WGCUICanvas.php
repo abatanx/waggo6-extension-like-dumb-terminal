@@ -52,7 +52,7 @@ class WGCUICanvas extends WGHtmlCanvas
 		$fnKeysLayoutLines = [];
 		for( $fn=1; $fn<=12; $fn++ )
 		{
-			$fnKeysLayoutLines[] = sprintf("FN%02d FN%02d JVCUISubmitElement", $fn, $fn);
+			$fnKeysLayoutLines[] = sprintf("FN%02d FN%02d WGCUISubmitElement", $fn, $fn);
 		}
 
 		// Merge user layout + fn layout
@@ -89,7 +89,7 @@ class WGCUICanvas extends WGHtmlCanvas
 			foreach ( $tags as $tag )
 			{
 				$line = preg_replace_callback( '/^(.*)(' . $tag->tag . '\.*)(.*)$/u', function ( $m ) use ( $y, $tag ) {
-					$element             = new WGCUIElement();
+					$element             = new WGCUIObject();
 					$element->tag        = $tag->tag;
 					$element->name       = $tag->name;
 					$element->x          = mb_strwidth( $m[1] );
@@ -116,11 +116,11 @@ class WGCUICanvas extends WGHtmlCanvas
 			do
 			{
 				$backup_line = $line;
-				$line        = preg_replace_callback( '/([^\-\|\+ ]+)/u', function ( $m ) use ( $y, $line ) {
+				$line        = preg_replace_callback( '/([^\-|\\\+ ]+)/u', function ( $m ) use ( $y, $line ) {
 					$pos = mb_strpos( $line, $m[1] );
 					$x   = mb_strwidth( mb_substr( $line, 0, $pos ) );
 
-					$static                 = new WGCUIStaticElement();
+					$static                 = new WGCUIStaticObject();
 					$static->x              = $x;
 					$static->y              = $y;
 					$static->label          = $m[1];
@@ -153,7 +153,6 @@ class WGCUICanvas extends WGHtmlCanvas
 				}
 				$x += mb_strwidth( $c );
 			}
-			$y ++;
 		}
 
 		foreach ( [ WGCUICSSLine::HORIZONTAL, WGCUICSSLine::VERTICAL ] as $direction )
@@ -234,18 +233,18 @@ class WGCUICanvas extends WGHtmlCanvas
 	{
 		$views = [];
 		/**
-		 * @var WGCUIElement $element
+		 * @var WGCUIObject $element
 		 */
 		foreach( $this->elements as $element )
 		{
-			$v = new WGV6BasicElement();
+			$element->cuiElement->view()->setId($element->viewName);
 			$views[$element->viewName] = $element->cuiElement->view();
 		}
 		return $views;
 	}
 
 	/**
-	 * @param string $name key name
+	 * @param string $name Name of registered grouped views.
 	 * @return WGV6Object[]
 	 */
 	public function getGroupedViews($name)
@@ -256,6 +255,16 @@ class WGCUICanvas extends WGHtmlCanvas
 		}
 		return [];
 	}
+
+	/**
+	 * @param string $name Name of registered grouped views.
+	 * @return int Count of grouped view elements.
+	 */
+	public function getGroupedViewsCount($name)
+	{
+		return count($this->getGroupedViews($name));
+	}
+
 
 	public function makeHtml()
 	{
@@ -282,17 +291,10 @@ class WGCUICanvas extends WGHtmlCanvas
 		}
 
 		/**
-		 * @var WGCUIElement $element
+		 * @var WGCUIObject $element
 		 */
 		foreach( $this->elements as $element )
 		{
-			$view = sprintf('<input id="%s" type="text" name="%s" value="%s" data-error="%s">',
-				$this->html[$element->viewName.':id'],
-				$this->html[$element->viewName.':name'],
-				$this->html[$element->viewName.':value'],
-				$this->html[$element->viewName.':error']
-			);
-
 			$this->html['cssElements'][] = [
 				'x' => $element->x, 'y' => $element->y, 'view' => $element->cuiElement->renderer(),
 				'width' => $element->width, 'height' => $element->height

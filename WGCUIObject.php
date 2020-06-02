@@ -6,13 +6,13 @@
  * Class WGCUICanvas
  */
 
-class WGCUIElement
+class WGCUIObject
 {
 	public $x, $y;
 	public $tag, $name, $width, $height, $viewName;
 
 	/**
-	 * @var JVCUIElement
+	 * @var WGCUIElement
 	 */
 	public $cuiElement;
 
