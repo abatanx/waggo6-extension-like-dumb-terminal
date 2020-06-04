@@ -1,6 +1,6 @@
 <?php
 /**
- * waggo6, the extention package like a dumb terminal
+ * waggo6, the extension package like a dumb terminal
  * @copyright 2020 CIEL, K.K.
  * @license MIT
  * Class WGCUICanvas

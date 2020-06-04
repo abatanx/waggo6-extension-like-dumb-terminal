@@ -1,9 +1,9 @@
 <?php
 
-class WGCUINumericLabelElement extends WGCUIElement
+class WGCUILabelElement extends WGCUIElement
 {
 	/**
-	 * @var WGV6Object
+	 * @var WGV6Basic
 	 */
 	public $view;
 
@@ -20,7 +20,7 @@ class WGCUINumericLabelElement extends WGCUIElement
 
 	public function renderer()
 	{
-		return sprintf( '<input id="%s" type="text" name="%s" value="%s" class="cui-numeric" data-error="%s" readonly disabled>',
+		return sprintf( '<input id="%s" type="text" name="%s" value="%s" data-error="%s" readonly disabled>',
 			htmlspecialchars($this->view->getId()),
 			htmlspecialchars($this->view->getName()),
 			htmlspecialchars($this->view->getValue()),

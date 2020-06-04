@@ -1,9 +1,9 @@
 <?php
 
-class WGCUIPasswordElement extends WGCUIElement
+class WGCUITextElement extends WGCUIElement
 {
 	/**
-	 * @var WGV6Object
+	 * @var WGV6Basic
 	 */
 	public $view;
 
@@ -20,9 +20,10 @@ class WGCUIPasswordElement extends WGCUIElement
 
 	public function renderer()
 	{
-		return sprintf('<input id="%s" type="password" name="%s" value="%s" data-error="%s">',
+		return sprintf('<input id="%s" type="text" name="%s" maxlength="%d" value="%s" data-error="%s">',
 			htmlspecialchars($this->view->getId()),
 			htmlspecialchars($this->view->getName()),
+			$this->inputWidth,
 			htmlspecialchars($this->view->getValue()),
 			htmlspecialchars($this->view->getError())
 		);

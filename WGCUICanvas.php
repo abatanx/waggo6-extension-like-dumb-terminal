@@ -1,6 +1,6 @@
 <?php
 /**
- * waggo6, the extention package like a dumb terminal
+ * waggo6, the extension package like a dumb terminal
  * @copyright 2020 CIEL, K.K.
  * @license MIT
  * Class WGCUICanvas
@@ -11,7 +11,12 @@ class WGCUICanvas extends WGHtmlCanvas
 	protected $cuiWidth, $cuiHeight;
 
 	protected $matrixLine, $cssLine;
-	protected $elements, $staticElements;
+
+	/**
+	 * @var WGCUIObject[]
+	 */
+	protected $elements;
+	protected $staticElements;
 	protected $groupedElements;
 
 	protected $arrayViews;
@@ -265,6 +270,19 @@ class WGCUICanvas extends WGHtmlCanvas
 		return count($this->getGroupedViews($name));
 	}
 
+	/**
+	 * Search CUIObject
+	 * @param WGV6Basic
+	 * @return WGCUIObject|boolean Return CUIObject if it found, else false.
+	 */
+	public function findCUIObject($view)
+	{
+		foreach( $this->elements as $e )
+		{
+			if( $e->cuiElement->view() == $view ) return $e;
+		}
+		return false;
+	}
 
 	public function makeHtml()
 	{
@@ -301,6 +319,29 @@ class WGCUICanvas extends WGHtmlCanvas
 			];
 		}
 
+		/**
+		 * Focus
+		 */
+		$elementSortBuffer = array_filter( $this->elements, function($v) {
+			return $v->hasForcus;
+		});
+		usort( $elementSortBuffer, function($a, $b)
+		{
+			/**
+			 * @var WGCUIObject
+			 */
+			if( $a->y !== $b->y ) return $a->y - $b->y;
+			if( $a->x !== $b->x ) return $a->x - $b->x;
+			return 0;
+		});
+		$elementSortBuffer = array_values($elementSortBuffer);
+		if( count($elementSortBuffer) > 0 )
+		{
+			/**
+			 * @var WGCUIObject[] $elementSortBuffer
+			 */
+			$this->html['focusElement'] = $elementSortBuffer[0]->cuiElement->view()->getId();
+		}
 		return $this;
 	}
 

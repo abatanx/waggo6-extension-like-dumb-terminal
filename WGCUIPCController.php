@@ -1,6 +1,6 @@
 <?php
 /**
- * waggo6, the extention package like a dumb terminal
+ * waggo6, the extension package like a dumb terminal
  * @copyright 2020 CIEL, K.K.
  * @license MIT
  * Class WGCUICanvas
@@ -25,6 +25,11 @@ abstract class WGCUIPCController extends WGFPCController
 	public function views()
 	{
 		return $this->pageCanvas->loadLayout( $this->layout() )->makeViews();
+	}
+
+	public function element($name)
+	{
+		return $this->pageCanvas->findCUIObject($this->view($name));
 	}
 
 	public function layout()

@@ -3,14 +3,14 @@
 class WGCUISubmitElement extends WGCUIElement
 {
 	/**
-	 * @var WGV6Object
+	 * @var WGV6Basic
 	 */
 	public $view;
 
 	public function __construct()
 	{
 		parent::__construct();
-		$this->view = new WGV6BasicSubmit();
+		$this->view = new WGCUIV6Submit();
 	}
 
 	public function view()

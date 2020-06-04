@@ -35,3 +35,10 @@ body
 	</div>
 	<!--{each fnElements}-->{@fnElements/view}<!--{/each}-->
 </form>
+<script>
+$(function()
+{
+	<!--{def focusElement}-->$('#{@focusElement}').focus().get(0).setSelectionRange(2**31,2**31);<!--{/def}-->
+
+});
+</script>

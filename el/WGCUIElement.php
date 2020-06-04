@@ -8,11 +8,18 @@ abstract class WGCUIElement
 	public $inputWidth;
 
 	/**
-	 * @return WGV6Object
+	 * @return WGV6Basic
 	 */
 	abstract public function view();
+
+	/**
+	 * @return string
+	 */
 	abstract public function renderer();
 
+	/**
+	 * WGCUIElement constructor.
+	 */
 	public function __construct()
 	{
 		$this->inputWidth = 0;
