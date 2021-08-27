@@ -57,7 +57,7 @@ class WGCUICanvas extends WGHtmlCanvas
 		$fnKeysLayoutLines = [];
 		for( $fn=1; $fn<=12; $fn++ )
 		{
-			$fnKeysLayoutLines[] = sprintf("FN%02d FN%02d WGCUISubmitElement", $fn, $fn);
+			$fnKeysLayoutLines[] = sprintf("FN%02d FN%02d CUISubmit", $fn, $fn);
 		}
 
 		// Merge user layout + fn layout
@@ -97,15 +97,15 @@ class WGCUICanvas extends WGHtmlCanvas
 					$element             = new WGCUIObject();
 					$element->tag        = $tag->tag;
 					$element->name       = $tag->name;
-					$element->x          = mb_strwidth( $m[1] );
+					$element->x          = wgcui_mb_strwidth( $m[1] );
 					$element->y          = $y;
-					$element->width      = mb_strwidth( $m[2] );
+					$element->width      = wgcui_mb_strwidth( $m[2] );
 					$element->height     = 1;
 					$element->cuiElement = new $tag->type;
 					$element->cuiElement->inputWidth = $element->width;
 					$this->elements[]    = $element;
 
-					return $m[1] . str_pad( '', mb_strwidth( $m[2] ), ' ' ) . $m[3];
+					return $m[1] . str_pad( '', wgcui_mb_strwidth( $m[2] ), ' ' ) . $m[3];
 				}, $line );
 			}
 		}
@@ -123,17 +123,17 @@ class WGCUICanvas extends WGHtmlCanvas
 				$backup_line = $line;
 				$line        = preg_replace_callback( '/([^\-|\\\+ ]+)/u', function ( $m ) use ( $y, $line ) {
 					$pos = mb_strpos( $line, $m[1] );
-					$x   = mb_strwidth( mb_substr( $line, 0, $pos ) );
+					$x   = wgcui_mb_strwidth( mb_substr( $line, 0, $pos ) );
 
 					$static                 = new WGCUIStaticObject();
 					$static->x              = $x;
 					$static->y              = $y;
 					$static->label          = $m[1];
-					$static->width          = mb_strwidth( $m[1] );
+					$static->width          = wgcui_mb_strwidth( $m[1] );
 					$static->height         = 1;
 					$this->staticElements[] = $static;
 
-					return str_pad( '', mb_strwidth( $m[1] ), ' ' );
+					return str_pad( '', wgcui_mb_strwidth( $m[1] ), ' ' );
 				}, $line );
 			}
 			while ( $line !== $backup_line );
@@ -156,7 +156,7 @@ class WGCUICanvas extends WGHtmlCanvas
 						$this->matrixLine[ $y ][ $x ] = true;
 						break;
 				}
-				$x += mb_strwidth( $c );
+				$x += wgcui_mb_strwidth( $c );
 			}
 		}
 

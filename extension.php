@@ -13,3 +13,5 @@ $WGCONF_AUTOLOAD = array_merge(
 		__DIR__ . '/el'
 	]
 );
+
+require_once __DIR__ . '/functions.php';

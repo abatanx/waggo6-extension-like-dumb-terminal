@@ -13,7 +13,7 @@ class WGCUIObject
 	public $hasForcus;
 
 	/**
-	 * @var WGCUIElement
+	 * @var CUI
 	 */
 	public $cuiElement;
 

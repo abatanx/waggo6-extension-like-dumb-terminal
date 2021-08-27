@@ -1,6 +1,6 @@
 <?php
 
-abstract class WGCUIElement
+abstract class CUI
 {
 	/**
 	 * @var int

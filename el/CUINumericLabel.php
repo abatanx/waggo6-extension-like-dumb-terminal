@@ -1,6 +1,6 @@
 <?php
 
-class WGCUINumericLabelElement extends WGCUIElement
+class CUINumericLabel extends CUI
 {
 	/**
 	 * @var WGV6Basic

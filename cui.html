@@ -4,37 +4,42 @@ body
 	position: relative;
 	font-size: {@charViewportWidth};
 	line-height: {@charViewportHeight};
+	width: 100vw;
+	height: 100vh;
 }
 
 #cui-canvas
 {
 	position: relative;
-	width: {@cuiViewportWidth};
-	height: {@cuiViewportHeight};
+	width: 100%;
 }
+
 </style>
 
-<form id="cui-canvas" class="wg-form" action="{@form:action}" method="{@form:method}" enctype="{@form:enctype}">
-	<div class="cui-css-line-layer">
-<!--{each cssHorizontalLines}-->
-		<div class="horizontal" style="left:calc({@w}*(0.5 + {@cssHorizontalLines/x}));top:calc({@h}*(0.5 + {@cssHorizontalLines/y}));width:calc({@w}*({@cssHorizontalLines/len} - 1));"></div>
-<!--{/each}-->
-<!--{each cssVerticalLines}-->
-		<div class="vertical" style="left:calc({@w}*(0.5 + {@cssVerticalLines/x}));top:calc({@h}*(0.5 + {@cssVerticalLines/y}));height:calc({@h}*({@cssVerticalLines/len} - 1));"></div>
-<!--{/each}-->
-	</div>
-	<div class="cui-css-static-layer">
-<!--{each cssStatics}-->
-		<div class="element" style="left:calc({@w}*{@cssStatics/x});top:calc({@h}*{@cssStatics/y});width:calc({@w}*{@cssStatics/width});height:calc({@h}*{@cssStatics/height});">{@cssStatics/label}</div>
-<!--{/each}-->
-	</div>
-	<div class="cui-css-element-layer">
-		<!--{each cssElements}-->
-		<div class="element" style="left:calc({@w}*{@cssElements/x});top:calc({@h}*{@cssElements/y});width:calc({@w}*{@cssElements/width});height:calc({@h}*{@cssElements/height});">{@cssElements/view}</div>
-		<!--{/each}-->
-	</div>
-	<!--{each fnElements}-->{@fnElements/view}<!--{/each}-->
-</form>
+<main>
+	<form id="cui-canvas" class="wg-form" action="{@form:action}" method="{@form:method}" enctype="{@form:enctype}">
+		<div class="cui-css-line-layer">
+			<!--{each cssHorizontalLines}-->
+			<div class="horizontal" style="left:calc({@w}*(0.5 + {@cssHorizontalLines/x}));top:calc({@h}*(0.5 + {@cssHorizontalLines/y}));width:calc({@w}*({@cssHorizontalLines/len} - 1));"></div>
+			<!--{/each}-->
+			<!--{each cssVerticalLines}-->
+			<div class="vertical" style="left:calc({@w}*(0.5 + {@cssVerticalLines/x}));top:calc({@h}*(0.5 + {@cssVerticalLines/y}));height:calc({@h}*({@cssVerticalLines/len} - 1));"></div>
+			<!--{/each}-->
+		</div>
+		<div class="cui-css-static-layer">
+			<!--{each cssStatics}-->
+			<div class="element" style="left:calc({@w}*{@cssStatics/x});top:calc({@h}*{@cssStatics/y});width:calc({@w}*{@cssStatics/width});height:calc({@h}*{@cssStatics/height});">{@cssStatics/label}</div>
+			<!--{/each}-->
+		</div>
+		<div class="cui-css-element-layer">
+			<!--{each cssElements}-->
+			<div class="element" style="left:calc({@w}*{@cssElements/x});top:calc({@h}*{@cssElements/y});width:calc({@w}*{@cssElements/width});height:calc({@h}*{@cssElements/height});">{@cssElements/view}</div>
+			<!--{/each}-->
+		</div>
+		<!--{each fnElements}-->{@fnElements/view}<!--{/each}-->
+	</form>
+</main>
+
 <script>
 $(function()
 {

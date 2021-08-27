@@ -1,6 +1,6 @@
 <?php
 
-class WGCUISubmitElement extends WGCUIElement
+class CUISubmit extends CUI
 {
 	/**
 	 * @var WGV6Basic
