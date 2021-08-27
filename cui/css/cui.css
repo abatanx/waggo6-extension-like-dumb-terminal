@@ -1,0 +1,160 @@
+@font-face {
+	font-family: 'Monitor';
+	src: url('../fonts/UbuntuMono-R.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+html
+{
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+
+body
+{
+	font-family: 'Monitor';
+	background-color: #000000;
+	color: #f0f0f0;
+	margin: 0;
+	padding: 0;
+}
+
+* {
+	color: white;
+}
+
+/* CUI canvas */
+#cui-canvas
+{
+	background-color: #000;
+}
+
+/* CSS Line */
+.cui-css-line-layer
+{
+	position: absolute;
+	margin: 0;
+	padding: 0;
+}
+
+.cui-css-line-layer div
+{
+	position: absolute;
+	margin: 0;
+	padding: 0;
+
+	border-color: #00ff00;
+	border-width: 1px;
+	background: none;
+	width: 1px;
+	height: 1px;
+}
+
+.cui-css-line-layer div.horizontal
+{
+	border-style: solid none none none;
+}
+.cui-css-line-layer div.vertical
+{
+	border-style: none none none solid;
+}
+
+/* CSS Element */
+.cui-css-static-layer
+{
+	position: absolute;
+	margin: 0;
+	padding: 0;
+}
+
+.cui-css-static-layer .element
+{
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	white-space: nowrap;
+	overflow: visible;
+	color: #0e0;
+	/*border: 1px solid #00f;*/
+}
+
+/* CSS Element */
+.cui-css-element-layer
+{
+	position: absolute;
+	margin: 0;
+	padding: 0;
+}
+
+.cui-css-element-layer .element
+{
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	/*border: 1px solid #f00;*/
+}
+
+.cui-css-element-layer .element input
+{
+	display: inline-block;
+	position: relative;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	background-color: #030;
+	border: 0;
+}
+
+.cui-css-element-layer .element input:read-only
+{
+	background-color: transparent;
+}
+
+.cui-css-element-layer .element input:focus
+{
+	animation: cui-input-blink-keyframes 1.5s linear infinite;
+}
+
+.cui-css-element-layer .element button
+{
+	display: inline-block;
+	position: relative;
+	background-color: #0f0;
+	color: #030;
+	outline: #0f0 dotted 1px;
+	outline-offset: 1px;
+	border: 0;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+.cui-css-element-layer .element button:focus
+{
+	animation: cui-input-blink-keyframes 1.5s linear infinite;
+	outline: #0f0 dotted 2px;
+	outline-offset: 3px;
+	z-index: 1500;
+}
+
+@keyframes cui-input-blink-keyframes
+{
+	0%,90% {
+		outline: #0f0 dashed 2px;
+		outline-offset: 3px;
+		z-index: 1500;
+	}
+	90.0000001%,100% {
+		outline: none;
+	}
+}
+
+.cui-css-element-layer .element .cui-numeric
+{
+	text-align: right;
+}

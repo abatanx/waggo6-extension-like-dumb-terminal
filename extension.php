@@ -9,6 +9,7 @@ global $WGCONF_AUTOLOAD;
 $WGCONF_AUTOLOAD = array_merge(
 	$WGCONF_AUTOLOAD,
 	[
+		__DIR__,
 		__DIR__ . '/v',
 		__DIR__ . '/el'
 	]

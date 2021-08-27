@@ -21,24 +21,24 @@ class WGCUICanvas extends WGHtmlCanvas
 
 	protected $arrayViews;
 
-	public function __construct($cuiWidth, $cuiHeight)
+	public function __construct( $cuiWidth, $cuiHeight )
 	{
 		parent::__construct();
 
-		$this->cuiWidth  = $cuiWidth ;
+		$this->cuiWidth  = $cuiWidth;
 		$this->cuiHeight = $cuiHeight;
 
-		$this->html['charViewportWidth']  = sprintf('%fvw', 100 / $cuiWidth * 2.0);
-		$this->html['charViewportHeight'] = sprintf('%fvw', 100 / $cuiWidth * 2.0);
+		$this->html['charViewportWidth']  = sprintf( '%fvw', 100 / $cuiWidth * 2.0 );
+		$this->html['charViewportHeight'] = sprintf( '%fvw', 100 / $cuiWidth * 2.0 );
 
-		$this->html['cuiViewportWidth']   = sprintf('%fvw', 100 );
-		$this->html['cuiViewportHeight']  = sprintf('%fvw', 100 / $cuiWidth * 2.0 * $cuiHeight);
+		$this->html['cuiViewportWidth']  = sprintf( '%fvw', 100 );
+		$this->html['cuiViewportHeight'] = sprintf( '%fvw', 100 / $cuiWidth * 2.0 * $cuiHeight );
 
-		$this->html['w'] = sprintf("%svw", 100 / $cuiWidth);
-		$this->html['h'] = sprintf("%svw", 100 / $cuiWidth * 2.0);
+		$this->html['w'] = sprintf( "%svw", 100 / $cuiWidth );
+		$this->html['h'] = sprintf( "%svw", 100 / $cuiWidth * 2.0 );
 	}
 
-	public function loadLayout($file)
+	public function loadLayout( $file )
 	{
 		$this->arrayViews     = [];
 		$this->elements       = [];
@@ -50,23 +50,23 @@ class WGCUICanvas extends WGHtmlCanvas
 		list( $layout, $setting ) = preg_split( '/^=+$/m', $contents );
 
 		// Layout tag settings
-		$tags = [];
+		$tags     = [];
 		$settings = explode( "\n", $setting );
 
 		// Add Function Key Lines
 		$fnKeysLayoutLines = [];
-		for( $fn=1; $fn<=12; $fn++ )
+		for ( $fn = 1; $fn <= 12; $fn ++ )
 		{
-			$fnKeysLayoutLines[] = sprintf("FN%02d FN%02d CUISubmit", $fn, $fn);
+			$fnKeysLayoutLines[] = sprintf( "FN%02d FN%02d CUISubmit", $fn, $fn );
 		}
 
 		// Merge user layout + fn layout
-		$settings = array_merge($settings, $fnKeysLayoutLines);
+		$settings = array_merge( $settings, $fnKeysLayoutLines );
 
 		foreach ( $settings as $sl )
 		{
 			$sp = preg_split( '/\s+/', trim( $sl ) );
-			if( count($sp) >= 3 )
+			if ( count( $sp ) >= 3 )
 			{
 				list( $tag, $name, $type ) = $sp;
 				if ( ! empty( $tag ) && ! empty( $name ) && ! empty( $type ) )
@@ -94,16 +94,16 @@ class WGCUICanvas extends WGHtmlCanvas
 			foreach ( $tags as $tag )
 			{
 				$line = preg_replace_callback( '/^(.*)(' . $tag->tag . '\.*)(.*)$/u', function ( $m ) use ( $y, $tag ) {
-					$element             = new WGCUIObject();
-					$element->tag        = $tag->tag;
-					$element->name       = $tag->name;
-					$element->x          = wgcui_mb_strwidth( $m[1] );
-					$element->y          = $y;
-					$element->width      = wgcui_mb_strwidth( $m[2] );
-					$element->height     = 1;
-					$element->cuiElement = new $tag->type;
+					$element                         = new WGCUIObject();
+					$element->tag                    = $tag->tag;
+					$element->name                   = $tag->name;
+					$element->x                      = wgcui_mb_strwidth( $m[1] );
+					$element->y                      = $y;
+					$element->width                  = wgcui_mb_strwidth( $m[2] );
+					$element->height                 = 1;
+					$element->cuiElement             = new $tag->type;
 					$element->cuiElement->inputWidth = $element->width;
-					$this->elements[]    = $element;
+					$this->elements[]                = $element;
 
 					return $m[1] . str_pad( '', wgcui_mb_strwidth( $m[2] ), ' ' ) . $m[3];
 				}, $line );
@@ -240,120 +240,153 @@ class WGCUICanvas extends WGHtmlCanvas
 		/**
 		 * @var WGCUIObject $element
 		 */
-		foreach( $this->elements as $element )
+		foreach ( $this->elements as $element )
 		{
-			$element->cuiElement->view()->setId($element->viewName);
-			$views[$element->viewName] = $element->cuiElement->view();
+			$element->cuiElement->view()->setId( $element->viewName );
+			$views[ $element->viewName ] = $element->cuiElement->view();
 		}
+
 		return $views;
 	}
 
 	/**
 	 * @param string $name Name of registered grouped views.
+	 *
 	 * @return WGV6Object[]
 	 */
-	public function getGroupedViews($name)
+	public function getGroupedViews( $name )
 	{
-		if( isset($this->groupedElements[$name]) )
+		if ( isset( $this->groupedElements[ $name ] ) )
 		{
-			return array_map( function($v) { return $v->cuiElement->view(); }, $this->groupedElements[$name]);
+			return array_map( function ( $v ) {
+				return $v->cuiElement->view();
+			}, $this->groupedElements[ $name ] );
 		}
+
 		return [];
 	}
 
 	/**
 	 * @param string $name Name of registered grouped views.
+	 *
 	 * @return int Count of grouped view elements.
 	 */
-	public function getGroupedViewsCount($name)
+	public function getGroupedViewsCount( $name )
 	{
-		return count($this->getGroupedViews($name));
+		return count( $this->getGroupedViews( $name ) );
 	}
 
 	/**
 	 * Search CUIObject
+	 *
 	 * @param WGV6Basic
+	 *
 	 * @return WGCUIObject|boolean Return CUIObject if it found, else false.
 	 */
-	public function findCUIObject($view)
+	public function findCUIObject( $view )
 	{
-		foreach( $this->elements as $e )
+		foreach ( $this->elements as $e )
 		{
-			if( $e->cuiElement->view() == $view ) return $e;
+			if ( $e->cuiElement->view() == $view )
+			{
+				return $e;
+			}
 		}
+
 		return false;
 	}
 
 	public function makeHtml()
 	{
 		// Rendering
-		foreach( $this->cssLine as $cssLine )
+		foreach ( $this->cssLine as $cssLine )
 		{
-			if( $cssLine->direction == WGCUICSSLine::HORIZONTAL )
+			if ( $cssLine->direction == WGCUICSSLine::HORIZONTAL )
 			{
-				$this->html['cssHorizontalLines'][] = [ 'x' => $cssLine->x, 'y' => $cssLine->y, 'len' => $cssLine->length];
+				$this->html['cssHorizontalLines'][] = [
+					'x'   => $cssLine->x,
+					'y'   => $cssLine->y,
+					'len' => $cssLine->length
+				];
 			}
 			else
 			{
-				$this->html['cssVerticalLines'][] = [ 'x' => $cssLine->x, 'y' => $cssLine->y, 'len' => $cssLine->length];
+				$this->html['cssVerticalLines'][] = [
+					'x'   => $cssLine->x,
+					'y'   => $cssLine->y,
+					'len' => $cssLine->length
+				];
 			}
 		}
 
-		foreach( $this->staticElements as $static )
+		foreach ( $this->staticElements as $static )
 		{
 			$this->html['cssStatics'][] = [
-				'x' => $static->x, 'y' => $static->y,
-				'width' => $static->width, 'height' => $static->height,
-				'label' => $static->label
+				'x'      => $static->x,
+				'y'      => $static->y,
+				'width'  => $static->width,
+				'height' => $static->height,
+				'label'  => $static->label
 			];
 		}
 
 		/**
 		 * @var WGCUIObject $element
 		 */
-		foreach( $this->elements as $element )
+		foreach ( $this->elements as $element )
 		{
 			$this->html['cssElements'][] = [
-				'x' => $element->x, 'y' => $element->y, 'view' => $element->cuiElement->renderer(),
-				'width' => $element->width, 'height' => $element->height
+				'x'      => $element->x,
+				'y'      => $element->y,
+				'view'   => $element->cuiElement->renderer(),
+				'width'  => $element->width,
+				'height' => $element->height
 			];
 		}
 
 		/**
 		 * Focus
 		 */
-		$elementSortBuffer = array_filter( $this->elements, function($v) {
+		$elementSortBuffer = array_filter( $this->elements, function ( $v ) {
 			return $v->hasForcus;
-		});
-		usort( $elementSortBuffer, function($a, $b)
-		{
+		} );
+		usort( $elementSortBuffer, function ( $a, $b ) {
 			/**
 			 * @var WGCUIObject
 			 */
-			if( $a->y !== $b->y ) return $a->y - $b->y;
-			if( $a->x !== $b->x ) return $a->x - $b->x;
+			if ( $a->y !== $b->y )
+			{
+				return $a->y - $b->y;
+			}
+			if ( $a->x !== $b->x )
+			{
+				return $a->x - $b->x;
+			}
+
 			return 0;
-		});
-		$elementSortBuffer = array_values($elementSortBuffer);
-		if( count($elementSortBuffer) > 0 )
+		} );
+		$elementSortBuffer = array_values( $elementSortBuffer );
+		if ( count( $elementSortBuffer ) > 0 )
 		{
 			/**
 			 * @var WGCUIObject[] $elementSortBuffer
 			 */
 			$this->html['focusElement'] = $elementSortBuffer[0]->cuiElement->view()->getId();
 		}
+
 		return $this;
 	}
 
 	function build()
 	{
 		$this->makeHtml();
-		return HtmlTemplate::buffer(__DIR__ . '/cui.html', $this->html);
+
+		return HtmlTemplate::buffer( __DIR__ . '/cui.html', $this->html );
 	}
 
 	function buildAndFlush()
 	{
 		$this->makeHtml();
-		HtmlTemplate::include(__DIR__ . '/cui.html', $this->html);
+		HtmlTemplate::include( __DIR__ . '/cui.html', $this->html );
 	}
 }
