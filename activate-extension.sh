@@ -35,4 +35,7 @@ echo "require_once __DIR__ . '/../$CURDIR/extension.php';" >> $CONFIGFILE
 cd $PUBDIR
 ln -sf ../${CURDIR}/cui cui
 
+cp ../${CURDIR}/demo/_demo.txt .
+cp ../${CURDIR}/demo/demo.php .
+
 echo "Completed"
